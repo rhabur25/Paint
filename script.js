@@ -88,6 +88,12 @@ const locations = [
   },
   {
     brand: "Benjamin Moore",
+    name: "Bengaluru, Karnataka, India",
+    address: "Bengaluru, Karnataka, India",
+    coords: [12.9716, 77.5946],
+  },
+  {
+    brand: "Benjamin Moore",
     name: "St. John's, Antigua and Barbuda",
     address: "BLUE WATERS MAIN RD, ST. JOHN'S, 00200",
     coords: [17.121, -61.8456],
