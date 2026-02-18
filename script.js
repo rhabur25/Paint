@@ -525,6 +525,42 @@ const locations = [
     address: "TOURTONNELAAN 120, PARAMARIBO, 00000",
     coords: [5.852, -55.2038],
   },
+  {
+    brand: "BEHR",
+    name: "Cuajimalpa de Morelos, CDMX",
+    address: "Corpativo Pabellon Bosques, Avenida Prolongacion Bosques de Reforma 1813-301, Colonia Lomas de Vista Hermosa, Cuajimalpa de Morelos, CDMX",
+    coords: [19.3667, -99.2833],
+  },
+  {
+    brand: "BEHR",
+    name: "Escobedo, Nuevo Leon",
+    address: "Avenida Nueva Castilla Numero 1011, Colonia Nueva Castilla, Escobedo, Nuevo Leon",
+    coords: [25.7883, -100.3944],
+  },
+  {
+    brand: "BEHR",
+    name: "Monterrey, Mexico",
+    address: "Monterrey, Mexico, D.F.C.P. 66052, 5757",
+    coords: [25.6866, -100.3161],
+  },
+  {
+    brand: "BEHR",
+    name: "Las Condes, Santiago",
+    address: "Oficina 409, Torre Oriente, Las Condes, Santiago",
+    coords: [-33.4069, -70.5526],
+  },
+  {
+    brand: "BEHR",
+    name: "Pune, India",
+    address: "Survey No. -236 & 237, Taco Road, Hinjewadi, Taluka-Mulshi, Pune-411057",
+    coords: [18.5904, 73.7997],
+  },
+  {
+    brand: "BEHR",
+    name: "Beijing, China",
+    address: "Behr (Beijing) Paint Company Limited",
+    coords: [39.9042, 116.4074],
+  },
 ];
 
 
@@ -552,7 +588,16 @@ const brandColors = {
 const listElement = document.getElementById("location-list");
 const markers = new Map();
 
+// Group locations by brand
+const locationsByBrand = {};
+locations.forEach((location) => {
+  if (!locationsByBrand[location.brand]) {
+    locationsByBrand[location.brand] = [];
+  }
+  locationsByBrand[location.brand].push(location);
+});
 
+// Create markers for all locations
 locations.forEach((location) => {
   const brandStyle = brandColors[location.brand] || brandColors["Benjamin Moore"];
   const marker = L.circleMarker(location.coords, {
@@ -570,19 +615,43 @@ locations.forEach((location) => {
     );
 
   markers.set(location.name, marker);
+});
 
-  if (location.list !== false) {
-    const item = document.createElement("li");
-    const button = document.createElement("button");
-    button.type = "button";
-    button.textContent = location.name;
-    button.addEventListener("click", () => {
-      map.setView(location.coords, 5, { animate: true });
-      marker.openPopup();
-    });
+// Create company groups with collapsible locations
+Object.entries(locationsByBrand).forEach(([brand, brandLocations]) => {
+  const group = document.createElement("div");
+  group.className = "company-group";
 
-    item.appendChild(button);
-    listElement.appendChild(item);
-  }
+  const header = document.createElement("button");
+  header.className = "company-header expanded";
+  header.type = "button";
+  header.innerHTML = `<span>${brand}</span><span class="toggle-icon">▼</span>`;
+
+  const locationsContainer = document.createElement("div");
+  locationsContainer.className = "company-locations expanded";
+
+  brandLocations.forEach((location) => {
+    if (location.list !== false) {
+      const button = document.createElement("button");
+      button.className = "location-item";
+      button.type = "button";
+      button.textContent = location.name;
+      button.addEventListener("click", () => {
+        const marker = markers.get(location.name);
+        map.setView(location.coords, 5, { animate: true });
+        marker.openPopup();
+      });
+      locationsContainer.appendChild(button);
+    }
+  });
+
+  header.addEventListener("click", () => {
+    header.classList.toggle("expanded");
+    locationsContainer.classList.toggle("expanded");
+  });
+
+  group.appendChild(header);
+  group.appendChild(locationsContainer);
+  listElement.appendChild(group);
 });
 

@@ -80,34 +80,80 @@ body {
 }
 
 .location-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
 }
 
-.location-list button {
-  width: 100%;
-  text-align: left;
-  padding: 12px 14px;
+.company-group {
   border-radius: 12px;
+  overflow: hidden;
   border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #fff;
+}
+
+.company-header {
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
   background: #fff;
   font-family: inherit;
   font-size: 14px;
+  font-weight: 600;
   color: var(--ink);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.2s ease;
 }
 
-.location-list button:hover,
-.location-list button:focus-visible {
-  transform: translateY(-2px);
-  border-color: rgba(198, 40, 40, 0.4);
-  box-shadow: 0 10px 16px rgba(15, 23, 42, 0.12);
+.company-header:hover,
+.company-header:focus-visible {
+  background: rgba(15, 23, 42, 0.04);
+  outline: none;
+}
+
+.company-header .toggle-icon {
+  transition: transform 0.2s ease;
+  font-size: 16px;
+  display: inline-block;
+}
+
+.company-header.expanded .toggle-icon {
+  transform: rotate(180deg);
+}
+
+.company-locations {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.company-locations.expanded {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.location-item {
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px 10px 28px;
+  border: none;
+  background: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  border-top: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.location-item:hover,
+.location-item:focus-visible {
+  transform: translateX(4px);
+  background: rgba(198, 40, 40, 0.08);
   outline: none;
 }
 
